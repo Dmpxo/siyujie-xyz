@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>禅意果香 · 四季节律 | 思愈界</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg-deep:#1a1612;--bg-card:#252019;
+      --accent-gold:#c9a96e;--accent-gold-dim:rgba(201,169,110,0.6);
+      --text-primary:#f0ebe3;--text-muted:#8a8078;--text-faint:#5a5248;
+      --border-subtle:rgba(201,169,110,0.12);
+      --radius:16px;
+      
+      --spring-pink:#e8c4c4;--spring-green:#a8c5a0;
+      --summer-green:#6ba88a;--summer-blue:#8bb8d4;
+      --autumn-orange:#d9a578;--autumn-yellow:#e8c87a;
+      --winter-silver:#c8c8d0;--winter-blue:#a8b8c8;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Noto Sans SC',sans-serif;
+      background:var(--bg-deep);color:var(--text-primary);
+      min-height:100vh;overflow-x:hidden;line-height:1.7;
+    }
+    
+    /* ====== 粒子背景 ====== */
+    .particles-container{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .particle{position:absolute;width:3px;height:3px;border-radius:50%;animation:float-p linear infinite;opacity:0}
+    @keyframes float-p{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-10vh)}}
+
+    /* ====== 导航栏 ====== */
+    .nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(26,22,18,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border-subtle);padding:12px 20px}
+    .nav-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+    .nav-link{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text-muted);text-decoration:none;font-size:.75rem;transition:all .3s}
+    .nav-link.active{color:var(--accent-gold)}
+    .nav-icon{font-size:1.2rem}
+
+    /* ====== 首页 Hero ====== */
+    .hero-section{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;position:relative;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(201,169,110,0.08) 0%,transparent 60%)}
+    .hero-title{font-family:'Noto Serif SC',serif;font-size:clamp(2.5rem,10vw,4rem);font-weight:700;letter-spacing:.15em;margin-bottom:8px;opacity:0;animation:fade-up 1s ease-out .3s forwards}
+    .hero-title span{color:var(--accent-gold);text-shadow:0 0 40px rgba(201,169,110,0.4)}
+    .hero-sub-en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--accent-gold-dim);letter-spacing:.3em;margin-bottom:16px;opacity:0;animation:fade-up 1s ease-out .6s forwards}
+    .hero-sub{font-size:.9rem;color:var(--text-muted);letter-spacing:.3em;max-width:600px;opacity:0;animation:fade-up 1s ease-out .9s forwards}
+    .hero-scroll{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:.7rem;letter-spacing:.2em;opacity:0;animation:fade-up 1s ease-out 1.5s forwards}
+    .scroll-arrow{width:24px;height:36px;border:1px solid var(--text-muted);border-radius:12px;position:relative}
+    .scroll-arrow::after{content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);width:4px;height:8px;background:var(--text-muted);border-radius:2px;animation:scroll-bounce 1.5s ease-in-out infinite}
+    @keyframes scroll-bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+    @keyframes fade-up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ====== 四季章节 ====== */
+    .season-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 20px 120px;position:relative;overflow:hidden}
+    .season-bg{position:absolute;inset:0;z-index:0}
+    
+    /* 春季 */
+    .season-spring .season-bg{background:linear-gradient(180deg,rgba(232,196,196,0.06) 0%,rgba(168,197,160,0.04) 50%,transparent 100%)}
+    .season-spring .season-icon{color:var(--spring-pink)}
+    .season-spring .product-card{border-color:rgba(232,196,196,0.2)}
+    
+    /* 夏季 */
+    .season-summer .season-bg{background:linear-gradient(180deg,rgba(107,168,138,0.06) 0%,rgba(139,184,212,0.04) 50%,transparent 100%)}
+    .season-summer .season-icon{color:var(--summer-green)}
+    .season-summer .product-card{border-color:rgba(107,168,138,0.2)}
+    
+    /* 长夏 */
+    .season-longsummer .season-bg{background:linear-gradient(180deg,rgba(217,165,120,0.06) 0%,rgba(232,200,122,0.04) 50%,transparent 100%)}
+    .season-longsummer .season-icon{color:var(--autumn-orange)}
+    .season-longsummer .product-card{border-color:rgba(217,165,120,0.2)}
+    
+    /* 秋季 */
+    .season-autumn .season-bg{background:linear-gradient(180deg,rgba(217,165,120,0.06) 0%,rgba(232,200,122,0.04) 50%,transparent 100%)}
+    .season-autumn .season-icon{color:var(--autumn-yellow)}
+    .season-autumn .product-card{border-color:rgba(232,200,122,0.2)}
+    
+    /* 冬季 */
+    .season-winter .season-bg{background:linear-gradient(180deg,rgba(200,200,208,0.06) 0%,rgba(168,184,200,0.04) 50%,transparent 100%)}
+    .season-winter .season-icon{color:var(--winter-silver)}
+    .season-winter .product-card{border-color:rgba(200,200,208,0.2)}
+
+    .season-content{max-width:1100px;margin:0 auto;width:100%;position:relative;z-index:1}
+    .season-header{text-align:center;margin-bottom:60px}
+    .season-tag{display:inline-block;font-size:.65rem;letter-spacing:.35em;color:var(--accent-gold);text-transform:uppercase;margin-bottom:16px;border:1px solid rgba(201,169,110,0.25);padding:5px 18px;border-radius:20px}
+    .season-title{font-family:'Noto Serif SC',serif;font-size:clamp(2rem,6vw,3rem);font-weight:700;letter-spacing:.1em;margin-bottom:12px}
+    .season-icon{font-size:3rem;margin-bottom:16px;display:block}
+    .season-desc{font-size:.9rem;color:var(--text-muted);max-width:500px;margin:0 auto;line-height:1.9}
+    .season-poem{font-family:'Noto Serif SC',serif;font-size:1.1rem;color:var(--accent-gold-dim);margin-top:20px;font-style:italic}
+    
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+    .product-card{background:rgba(37,32,25,0.6);backdrop-filter:blur(10px);border:1px solid var(--border-subtle);border-radius:var(--radius);padding:24px;transition:all .4s ease;opacity:0;animation:card-appear .8s ease-out forwards}
+    @keyframes card-appear{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    .product-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+    .product-name{font-family:'Noto Serif SC',serif;font-size:1.4rem;font-weight:600;margin-bottom:12px;color:var(--text-primary)}
+    .product-period{font-size:.75rem;color:var(--text-muted);letter-spacing:.2em;margin-bottom:16px}
+    .product-divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent-gold-dim),transparent);margin-bottom:16px}
+    .product-formula{font-size:.85rem;color:var(--text-muted);margin-bottom:12px}
+    .product-formula .label{color:var(--accent-gold-dim);font-weight:500}
+    .product-effect{font-size:.85rem;color:var(--text-primary);line-height:1.8;margin-bottom:16px}
+    .product-effect .label{color:var(--accent-gold);font-weight:500}
+    .product-price{font-size:1.2rem;color:var(--accent-gold);font-weight:600;text-align:right}
+    .product-note{font-size:.7rem;color:var(--text-faint);margin-top:8px;text-align:right}
+
+    /* ====== 四季装饰元素 ====== */
+    .season-decoration{position:absolute;pointer-events:none;z-index:0}
+    
+    /* 樱花 */
+    .sakura{position:absolute;width:10px;height:10px;background:var(--spring-pink);border-radius:50% 0 50% 50%;opacity:.6;animation:sakura-fall linear infinite}
+    @keyframes sakura-fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+    
+    /* 雨滴 */
+    .raindrop{position:absolute;width:2px;height:20px;background:linear-gradient(to bottom,transparent,var(--summer-blue));opacity:.4;animation:rain-fall linear infinite}
+    @keyframes rain-fall{0%{transform:translateY(-10vh)}100%{transform:translateY(110vh)}}
+    
+    /* 落叶 */
+    .leaf{position:absolute;width:20px;height:12px;background:var(--autumn-orange);border-radius:50% 0 50% 50%;opacity:.5;animation:leaf-fall linear infinite}
+    @keyframes leaf-fall{0%{transform:translateY(-10vh) rotate(0deg)}100%{transform:translateY(110vh) rotate(720deg)}}
+    
+    /* 雪花 */
+    .snowflake{position:absolute;width:8px;height:8px;border:1px solid var(--winter-silver);border-radius:50%;opacity:.5;animation:snow-fall linear infinite}
+    @keyframes snow-fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:.5}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+
+    /* ====== 页脚 ====== */
+    .footer{padding:60px 20px 100px;text-align:center;background:var(--bg-deep)}
+    .footer-brand{font-family:'Noto Serif SC',serif;font-size:1.5rem;font-weight:700;margin-bottom:8px}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.9rem;color:var(--accent-gold-dim);margin-bottom:24px}
+    .footer-note{font-size:.75rem;color:var(--text-faint);line-height:2}
+
+    /* ====== 响应式 ====== */
+    @media(max-width:768px){
+      .products-grid{grid-template-columns:1fr}
+      .season-section{padding:60px 16px 120px}
+      .hero-title{font-size:2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="particles-container" id="particles"></div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-title">禅意果香<span>·</span>四季节律</div>
+    <div class="hero-sub-en">Seasonal Rhythm</div>
+    <div class="hero-sub">《黄帝内经》四时总则：春生木疏肝、夏长火清心、长夏土化湿、秋收金润肺、冬藏水温肾</div>
+    <div class="hero-scroll">
+      <span>向下探索</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- Spring -->
+  <section class="season-section season-spring" id="spring">
+    <div class="season-bg"></div>
+    <div class="season-decoration" id="spring-deco"></div>
+    <div class="season-content">
+      <div class="season-header">
+        <span class="season-tag">Spring</span>
+        <div class="season-icon">&#x1F34A;</div>
+        <h2 class="season-title">春 · 爆爆橙</h2>
+        <p class="season-desc">立春—小满 · 厥阴风木<br>春木升发，风气盛行，肝胆木气偏亢，易肝火上浮、情绪郁结</p>
+        <p class="season-poem">"春风又绿江南岸，明月何时照我还"</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="animation-delay:0s">
+          <h3 class="product-name">爆爆橙</h3>
+          <p class="product-period">立春 — 小满</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>血橙皮、白芷、香薷、甘菊、黄柏、连翘、海南虫漏、北澳檀香</p>
+          <p class="product-effect"><span class="label">功效：</span>疏肝清火、提神解郁，化解春风裹挟浊秽、春季上火烦躁</p>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summer -->
+  <section class="season-section season-summer" id="summer">
+    <div class="season-bg"></div>
+    <div class="season-decoration" id="summer-deco"></div>
+    <div class="season-content">
+      <div class="season-header">
+        <span class="season-tag">Summer</span>
+        <div class="season-icon">&#x1F34B;</div>
+        <h2 class="season-title">夏 · 甜柚香</h2>
+        <p class="season-desc">小满—处暑 · 少阴君火、少阳相火<br>夏季两火叠加，暑热蒸腾，心火旺盛，湿气暗藏</p>
+        <p class="season-poem">"接天莲叶无穷碧，映日荷花别样红"</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="animation-delay:0s">
+          <h3 class="product-name">甜柚香</h3>
+          <p class="product-period">小满 — 处暑</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>柚花、橙花、洛神、佛手、岩兰草、海南虫漏沉香、也门乳香</p>
+          <p class="product-effect"><span class="label">功效：</span>清暑祛湿、和脾清心，解决夏季心烦、身体困重、贪凉伤脾胃</p>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Long Summer -->
+  <section class="season-section season-longsummer" id="longsummer">
+    <div class="season-bg"></div>
+    <div class="season-decoration" id="longsummer-deco"></div>
+    <div class="season-content">
+      <div class="season-header">
+        <span class="season-tag">Long Summer</span>
+        <div class="season-icon">&#x1F348;</div>
+        <h2 class="season-title">长夏 · 蜜瓜香</h2>
+        <p class="season-desc">处暑—秋分 · 太阴湿土<br>长夏独属土运，雨水连绵，湿浊壅堵中焦，脾失运化</p>
+        <p class="season-poem">"黄梅时节家家雨，青草池塘处处蛙"</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="animation-delay:0s">
+          <h3 class="product-name">蜜瓜香</h3>
+          <p class="product-period">处暑 — 秋分</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>藿香、茅香、甘松、丁香、老山檀、降真香、双沉香、乳香</p>
+          <p class="product-effect"><span class="label">功效：</span>祛湿减重、健脾固本，加速三焦水液代谢，消解痰湿水肿</p>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Autumn -->
+  <section class="season-section season-autumn" id="autumn">
+    <div class="season-bg"></div>
+    <div class="season-decoration" id="autumn-deco"></div>
+    <div class="season-content">
+      <div class="season-header">
+        <span class="season-tag">Autumn</span>
+        <div class="season-icon">&#x1F351;</div>
+        <h2 class="season-title">秋 · 蜜桃香</h2>
+        <p class="season-desc">秋分—立冬 · 阳明燥金<br>秋燥金气肃降，肺阴耗损，人易咽干干咳、情绪低落</p>
+        <p class="season-poem">"停车坐爱枫林晚，霜叶红于二月花"</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="animation-delay:0s">
+          <h3 class="product-name">蜜桃香</h3>
+          <p class="product-period">秋分 — 立冬</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>蜜桃、蜜玫瑰、白梅、安汶沉、登流眉沉、甘草、零陵香</p>
+          <p class="product-effect"><span class="label">功效：</span>润肺敛燥、活血养颜，改善秋燥皮肤暗沉、情绪低落</p>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Winter -->
+  <section class="season-section season-winter" id="winter">
+    <div class="season-bg"></div>
+    <div class="season-decoration" id="winter-deco"></div>
+    <div class="season-content">
+      <div class="season-header">
+        <span class="season-tag">Winter</span>
+        <div class="season-icon">&#x2744;&#xFE0F;</div>
+        <h2 class="season-title">冬 · 双款对症</h2>
+        <p class="season-desc">立冬—次年立春 · 太阳寒水<br>冬季太阳寒水主事，分层对症，解决"冬用西瓜凉香"争议</p>
+        <p class="season-poem">"忽如一夜春风来，千树万树梨花开"</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="animation-delay:0s">
+          <h3 class="product-name">蜜桃香（通用基础款）</h3>
+          <p class="product-period">立冬 — 次年立春</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>蜜桃、蜜玫瑰、白梅、安汶沉、登流眉沉、甘草</p>
+          <p class="product-effect"><span class="label">功效：</span>温润敛藏固肾，纯虚寒体质首选，顺冬藏固本之道</p>
+          
+          <p class="product-note">纯虚寒体质首选</p>
+        </div>
+        <div class="product-card" style="animation-delay:.2s">
+          <h3 class="product-name">冰夏西瓜香（对症细分款）</h3>
+          <p class="product-period">立冬 — 次年立春</p>
+          <div class="product-divider"></div>
+          <p class="product-formula"><span class="label">配方：</span>广平黑土沉、棋肉沉香、阴干西瓜翠衣、西澳新山檀香</p>
+          <p class="product-effect"><span class="label">功效：</span>引火归元、清上温下，上热下寒人群专用，凉草仅清上焦</p>
+          
+          <p class="product-note">上热下寒人群专用</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-brand">思愈界</div>
+    <div class="footer-tagline">"A scent, a blessing, a connection."</div>
+    <p class="footer-note">植根古方药理，融合现代生物低温提香工艺<br>首创花材、香材、本草药材三合一合香体系</p>
+  </footer>
+
+  <!-- Navigation -->
+  <nav class="nav-bar">
+    <div class="nav-links">
+      <a href="https://siyujie.fun" class="nav-link"><span class="nav-icon">🏠</span><span>首页</span></a>
+      <a href="https://siyujie.online" class="nav-link"><span class="nav-icon">🌀</span><span>五行经典</span></a>
+      <a href="seasonal-fragrance.html" class="nav-link active"><span class="nav-icon">🌸</span><span>四季果香</span></a>
+      <a href="https://siyujie.shop" class="nav-link"><span class="nav-icon">☯️</span><span>道系灵山</span></a>
+      <a href="https://end-dmpxo.art" class="nav-link"><span class="nav-icon">🌺</span><span>十二花神</span></a>
+    </div>
+  </nav>
+
+  <script>
+    // Create particles
+    function createParticles(){
+      const c=document.getElementById('particles');
+      for(let i=0;i<30;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'%';
+        p.style.background=Math.random()>0.5?'rgba(201,169,110,0.6)':'rgba(139,168,136,0.4)';
+        p.style.animationDuration=(15+Math.random()*20)+'s';
+        p.style.animationDelay=Math.random()*15+'s';
+        c.appendChild(p);
+      }
+    }
+
+    // Create seasonal decorations
+    function createDecorations(){
+      // Spring - Sakura
+      const springDeco=document.getElementById('spring-deco');
+      for(let i=0;i<15;i++){
+        const s=document.createElement('div');
+        s.className='sakura';
+        s.style.left=Math.random()*100+'%';
+        s.style.animationDuration=(8+Math.random()*10)+'s';
+        s.style.animationDelay=Math.random()*10+'s';
+        springDeco.appendChild(s);
+      }
+
+      // Summer - Rain
+      const summerDeco=document.getElementById('summer-deco');
+      for(let i=0;i<20;i++){
+        const r=document.createElement('div');
+        r.className='raindrop';
+        r.style.left=Math.random()*100+'%';
+        r.style.animationDuration=(1+Math.random()*1)+'s';
+        r.style.animationDelay=Math.random()*2+'s';
+        summerDeco.appendChild(r);
+      }
+
+      // Long Summer - Leaves
+      const longsummerDeco=document.getElementById('longsummer-deco');
+      for(let i=0;i<12;i++){
+        const l=document.createElement('div');
+        l.className='leaf';
+        l.style.left=Math.random()*100+'%';
+        l.style.animationDuration=(10+Math.random()*10)+'s';
+        l.style.animationDelay=Math.random()*10+'s';
+        longsummerDeco.appendChild(l);
+      }
+
+      // Autumn - Leaves
+      const autumnDeco=document.getElementById('autumn-deco');
+      for(let i=0;i<15;i++){
+        const l=document.createElement('div');
+        l.className='leaf';
+        l.style.left=Math.random()*100+'%';
+        l.style.background=i%2===0?'var(--autumn-orange)':'var(--autumn-yellow)';
+        l.style.animationDuration=(10+Math.random()*10)+'s';
+        l.style.animationDelay=Math.random()*10+'s';
+        autumnDeco.appendChild(l);
+      }
+
+      // Winter - Snow
+      const winterDeco=document.getElementById('winter-deco');
+      for(let i=0;i<25;i++){
+        const s=document.createElement('div');
+        s.className='snowflake';
+        s.style.left=Math.random()*100+'%';
+        s.style.animationDuration=(12+Math.random()*10)+'s';
+        s.style.animationDelay=Math.random()*15+'s';
+        winterDeco.appendChild(s);
+      }
+    }
+
+    // Initialize
+    window.addEventListener('load',()=>{
+      createParticles();
+      createDecorations();
+    });
+  </script>
+</body>
+</html>
